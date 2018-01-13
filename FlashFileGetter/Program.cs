@@ -15,14 +15,14 @@ namespace FlashFileGetter
         /// 隐藏窗口需要
         /// </summary>
 
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetConsoleWindow();
+        [DllImport("kernel32.dll")]//隐藏/显示窗口必需
+        static extern IntPtr GetConsoleWindow();//隐藏/显示窗口必需
 
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        [DllImport("user32.dll")]//隐藏/显示窗口必需
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);//隐藏/显示窗口必需
 
-        const int SW_HIDE = 0;
-        const int SW_SHOW = 5;
+        const int SW_HIDE = 0;//隐藏/显示窗口必需
+        const int SW_SHOW = 5;//隐藏/显示窗口必需
 
         public static bool FileGetted = false;
 
